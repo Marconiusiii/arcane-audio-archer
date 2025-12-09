@@ -88,6 +88,7 @@ const arrowsValueEl = document.getElementById("arrows-value");
 const stateTextEl = document.getElementById("state-text");
 const instructionsSection = document.getElementById("instructions-section");
 const hudSection = document.getElementById("hud-section");
+const footerSection = document.getElementById("footer");
 
 const startBtn = document.getElementById("start-btn");
 const setAimBtn = document.getElementById("set-aim-btn");
@@ -320,6 +321,13 @@ function setHUDInert(state) {
 function setInstructionsInert(state) {
 	state ? instructionsSection.setAttribute("inert", "") : instructionsSection.removeAttribute("inert");
 }
+
+function setFooterInert(state) {
+	if (footerSection) {
+		state ? footerSection.setAttribute("inert", "") : footerSection.removeAttribute("inert");
+	}
+}
+
 
 function setHighscoreInert(isInert) {
 	if (!highscoreSection) return;
@@ -883,6 +891,7 @@ function beginRound() {
 	setInstructionsInert(true);
 	setStartGameInert(true);
 	enableHighscoresInert();
+	setFooterInert(true);
 
 
 	setAimBtn.hidden = false;
@@ -1064,6 +1073,8 @@ function onMiss(didPlaySound = false) {
 	setState(GameState.GAME_OVER, `Game Over, Final Score: ${game.score}.`);
 	announce(`Game over. Final Score: ${game.score}.`);
 	setInstructionsInert(false);
+	setFooterInert(false);
+
 
 	setAimBtn.hidden = true;
 	setStartGameInert(false);
@@ -1082,12 +1093,13 @@ function restartGame() {
 	game.round = 1;
 	game.score = 0;
 	updateHUD();
-	setState(GameState.IDLE, "Ready. Press Space or the Start Game button.");
+	setState(GameState.IDLE, "Ready? Press Space or the Start Game button.");
 	setAimBtn.hidden = true;
 	setStartGameInert(false);
 	setInstructionsInert(false);
 	setHUDInert(true);
 	setHighscoreInert(false);
+	setFooterInert(false);
 }
 
 function handlePrimaryAction() {
