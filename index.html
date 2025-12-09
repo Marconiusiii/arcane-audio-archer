@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8" />
+	<title>Arcane Audio Archer</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<meta name="description" content="An accessible retro audio archery game." />
+	<link rel="stylesheet" type="text/css" href="css/archer.css">
+</head>
+
+<body>
+	<div class="game-shell">
+		<main class="panel game-main" id="game-panel">
+
+			<div class="panel-header">
+				<h1>Arcane Audio Archer</h1>
+				<p>By Marco Salsiccia.</p>
+				<p class="small muted">Welcome, squire! Try your hand at archery using only your ears! Have thee feedback? <a href="mailto:marco@marconius.com" id="email">Send a raven!</a></p>
+			</div>
+
+			<section id="hud-section" class="hud-row" aria-label="Game status" inert>
+				<div class="hud-pill">
+					<div role="text"><span class="label">Round</span><span id="round-value">1</span></div>
+				</div>
+				<div class="hud-pill">
+					<div role="text"><span class="label">Score</span><span id="score-value">0</span></div>
+				</div>
+				<div class="hud-pill">
+					<div role="text"><span class="label">Arrows</span><span id="arrows-value">5</span></div>
+				</div>
+			</section>
+
+			<p class="state-display" id="state-text">Ready. Press Space or the Start Game button.</p>
+
+			<section id="instructions-section">
+				<h2>How to Play</h2>
+				<ul class="small">
+					<li>Use headphones. Your archer is on the left and the target is on the right.</li>
+					<li>The target will be pulled up on a chain to a random vertical and horizontal position in each round. A ping will sound identifying where the target is, and will ping softly throughout the round.</li>
+					<li>You have 5 arrows per round. The game ends when you run out of arrows.</li>
+					<li>You'll hear a rising set of beeps on your left to set your angle. You'll hear a growing and shrinking noise going from left to middle for your power. Set the angle and power of your shot with the Set Aim button, space bar, or Enter key. Once you set your angle, you'll immediately start setting your power.</li>
+					<li>You'll hear a little blip during angle and power sounds showing your previous values.</li>
+<li>After setting your power, your arrow will be loosed! You'll hear if the arrow was too high, too low, or nail the target.</li>
+					<li>You get 100 points for each hit, plus 100 for each arrow left in your quiver.</li>
+				</ul>
+			</section>
+
+			<div class="button-row">
+				<button id="start-btn">Start Game</button>
+				<button id="set-aim-btn" hidden>Set Aim</button>
+			</div>
+
+
+
+			<div id="highscore-section">
+				<h2 id="hsTitle">High Scores</h2>
+				<p class="small muted" id="hs-loading">Loading high scores…</p>
+
+				<ol id="highscore-list" class="highscore-list" hidden></ol>
+			</div>
+
+
+			<!-- High score submission dialog -->
+			<dialog id="highscore-dialog">
+				<form id="highscore-form" method="dialog">
+					<h2>New High Score</h2>
+					<p>Your final score: <span id="final-score-display"></span></p>
+
+					<label class="small">
+						Enter your initials (3 letters or numbers):
+						<input type="text" id="hs-initials" maxlength="3" required autocomplete="off">
+					</label>
+
+					<div class="button-row">
+						<button id="hs-submit-btn" value="submit">Submit Score</button>
+						<button id="hs-cancel-btn" value="cancel">Cancel</button>
+					</div>
+				</form>
+			</dialog>
+
+
+			<section aria-hidden="true">
+				<div class="visual-strip" role="presentation">
+					<div class="visual-strip-inner" aria-hidden="true"></div>
+					<div class="visual-token player" aria-hidden="true"></div>
+					<div class="visual-token target" aria-hidden="true"></div>
+					<div class="visual-token shot" id="shot-token" aria-hidden="true"></div>
+				</div>
+			</section>
+
+			<div id="live-region" class="sr-only" aria-live="polite"></div>
+		</main>
+	</div>
+
+	<script src="scripts/arcaneArcher.js"></script>
+</body>
+</html>
