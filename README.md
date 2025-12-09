@@ -25,4 +25,8 @@ This is an accessible audio-based archery game created by the Blind for the Blin
 * Mobile-first and responsive design.
 * Visual indicators for sighted players.
 * Realistic ballistics model for the arrow flight.
+* Retro high scores with Initials tracking.
 
+## Tech Stack
+
+HTML, CSS, JavaScript, PHP
