@@ -33,7 +33,8 @@
 			<p class="state-display" id="state-text">Ready. Press Space or the Start Game button.</p>
 
 			<section id="instructions-section">
-				<h2>How to Play</h2>
+			<details id="instruction-details">
+				<summary>How to Play</summary>
 				<ul class="small">
 					<li>Use headphones. Your archer is on the left and the target is on the right.</li>
 					<li>The target will be pulled up on a chain to a random vertical and horizontal position in each round. A ping will sound identifying where the target is, and will ping softly throughout the round.</li>
@@ -43,6 +44,23 @@
 <li>After setting your power, your arrow will be loosed! You'll hear if the arrow was too high, too low, or nail the target.</li>
 					<li>You get 100 points for each hit, plus 100 for each arrow left in your quiver.</li>
 				</ul>
+				</details>
+<details id="settings-details">
+	<summary><strong>Game Settings</strong></summary>
+
+	<div class="setting-row">
+		<input aria-describedby="blipInfo" type="checkbox" id="toggle-blips" checked>
+		<label for="toggle-blips">Enable Previous Shot Blips</label>
+		<p id="blipInfo">This removes the Angle and Power blips from your previous shot from playing while setting your aim.</p>
+	</div>
+
+	<div class="setting-row">
+		<input aria-describedby="verbInfo" type="checkbox" id="toggle-verbosity">
+		<label for="toggle-verbosity">Reduced announcement Verbosity</label>
+		<p id="verbInfo">This removes the Angle and Power screen reader announcements, plus makes the Too High, Too Low, and Target Hit announcements shorter.</p>
+	</div>
+</details>
+
 			</section>
 
 			<div class="button-row">

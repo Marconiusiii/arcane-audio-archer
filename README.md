@@ -17,6 +17,11 @@ This is an accessible audio-based archery game created by the Blind for the Blin
 * As the rounds progress, the target will start appearing in increasingly wide horizontal and tall vertical ranges in the field. The target will also start decreasing in size to increase difficulty.
 * Enter your initials if you get a high score once the game is over.
 
+## Game Settings
+
+* Toggle the previous shot blips played during the Angle and Power sound effects on and off.
+* Reduce the screen reader spoken verbosity; removes "Angle," "Power," "Too High," "Too Low," and "You earned..." callouts from aria announcements.
+
 ## Game Features
 
 * Pure JavaScript-based stereo sound effects.

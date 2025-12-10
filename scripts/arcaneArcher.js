@@ -12,6 +12,12 @@ const GameState = {
 	GAME_OVER: "game_over"
 };
 
+let settings = {
+	enableBlips: true,
+	reducedVerbosity: false
+};
+
+
 const game = {
 	state: GameState.IDLE,
 	round: 1,
@@ -89,6 +95,22 @@ const stateTextEl = document.getElementById("state-text");
 const instructionsSection = document.getElementById("instructions-section");
 const hudSection = document.getElementById("hud-section");
 const footerSection = document.getElementById("footer");
+
+const toggleBlipsEl = document.getElementById("toggle-blips");
+const toggleVerbosityEl = document.getElementById("toggle-verbosity");
+
+if (toggleBlipsEl) {
+	toggleBlipsEl.addEventListener("change", () => {
+		settings.enableBlips = toggleBlipsEl.checked;
+	});
+}
+
+if (toggleVerbosityEl) {
+	toggleVerbosityEl.addEventListener("change", () => {
+		settings.reducedVerbosity = toggleVerbosityEl.checked;
+	});
+}
+
 
 const startBtn = document.getElementById("start-btn");
 const setAimBtn = document.getElementById("set-aim-btn");
@@ -539,10 +561,12 @@ function startAngleSweep(lastNorm) {
 				const dir = diff >= 0 ? 1 : -1;
 				if (Math.abs(diff) < 0.03 && dir !== lastDir) {
 					lastDir = dir;
-					playBeep(audioSettings.lastShotPing.frequency, 70, {
-						gain: audioSettings.lastShotPing.gain,
-						pan: -0.4
-					});
+					if (settings.enableBlips) {
+						playBeep(audioSettings.lastShotPing.frequency, 70, {
+							gain: audioSettings.lastShotPing.gain,
+							pan: -0.4
+						});
+					}
 				}
 			}
 		}
@@ -631,10 +655,12 @@ function startPowerSweep(lastNorm) {
 				const dir = diff >= 0 ? 1 : -1;
 				if (Math.abs(diff) < 0.03 && dir !== lastDir) {
 					lastDir = dir;
-					playBeep(audioSettings.lastShotPing.frequency, 70, {
-						gain: audioSettings.lastShotPing.gain,
-						pan: 0.6
-					});
+					if (settings.enableBlips) {
+						playBeep(audioSettings.lastShotPing.frequency, 70, {
+							gain: audioSettings.lastShotPing.gain,
+							pan: 0.6
+						});
+					}
 				}
 			}
 		} else {
@@ -908,7 +934,7 @@ function setState(s, msg) {
 
 function startAnglePhase() {
 	setState(GameState.SETTING_ANGLE, "Set angle.");
-	announce("Angle.");
+	if (!settings.reducedVerbosity) announce("Angle.");
 	startAngleSweep(game.lastShot.angleNorm);
 }
 
@@ -922,7 +948,7 @@ function lockAngle() {
 	game.currentShot.angleNorm ??= 0.5;
 
 	setState(GameState.SETTING_POWER, "Set power.");
-	announce("Power.");
+	if (!settings.reducedVerbosity) announce("Power.");
 	startPowerSweep(game.lastShot.powerNorm);
 }
 
@@ -998,17 +1024,32 @@ const hit = (dx <= hitDistanceThreshold && dy <= hitHeightThreshold);
 			// Too low
 			playMissLow(landingPan);
 			if (game.arrowsLeft > 1) {
-				announce(`Too low, ${game.arrowsLeft} arrows left.`);
+				if (settings.reducedVerbosity) {
+					announce(`${game.arrowsLeft} arrows left.`);
+				} else {
+					announce(`Too low. ${game.arrowsLeft} arrows left.`);
+				}
 			} else {
-				announce(`Too low, ${game.arrowsLeft} arrow left.`);
+				if (settings.reducedVerbosity) {
+					announce(`${game.arrowsLeft} arrow left.`);						} else {
+					announce(`Too low, ${game.arrowsLeft} arrow left.`);
+				}
 			}
 		} else {
 			// Too high
 			playMissHigh();
 			if (game.arrowsLeft > 1) {
-				announce(`Too high, ${game.arrowsLeft} arrows left.`);
+				if (settings.reducedVerbosity) {
+					announce(`${game.arrowsLeft} arrows left.`);
+				} else {
+					announce(`Too high, ${game.arrowsLeft} arrows left.`);
+				}
 			} else {
-				announce(`Too high, ${game.arrowsLeft} arrow left.`);
+				if (settings.reducedVerbosity) {
+					announce(`${game.arrowsLeft} arrow left.`);
+				} else {
+					announce(`Too high, ${game.arrowsLeft} arrow left.`);
+				}
 			}
 		}
 
@@ -1025,7 +1066,11 @@ function onHit() {
 	updateHUD();
 
 	setState(GameState.ROUND_END, `Hit! +${gained} points.`);
-	announce(`Hit! You earned ${gained} points.`);
+	if (settings.reducedVerbosity) {
+		announce(`Hit! +${gained} points.`);
+	} else {
+		announce(`Hit! You earned ${gained} points.`);
+	};
 
 	game.round++;
 	updateHUD();
@@ -1120,14 +1165,22 @@ function handlePrimaryAction() {
 }
 
 window.addEventListener("keydown", e => {
+	const active = document.activeElement;
+	const isFormControl =
+		active instanceof HTMLInputElement ||
+		active instanceof HTMLButtonElement ||
+		active instanceof HTMLSelectElement ||
+		active instanceof HTMLTextAreaElement ||
+		active.getAttribute("role") === "button" ||
+		active.closest("details");
+
+	// If focus is inside a control or details element, DO NOT start the game
+	if (isFormControl) {
+		return; // allow native behavior
+	}
+
+	// Otherwise, Space / Enter run the game
 	if (e.code === "Space" || e.code === "Enter") {
-
-		// If the high score dialog is open, do NOT hijack Space/Enter.
-		// Let the dialog and its form handle them normally.
-		if (highscoreDialog && highscoreDialog.open) {
-			return;
-		}
-
 		e.preventDefault();
 		ensureAudioContext();
 		handlePrimaryAction();
