@@ -1199,3 +1199,12 @@ window.addEventListener("load", () => {
 	setStartGameInert(false);
 	setHighscoreInert(false); // scoreboard interactive on idle screen
 });
+
+function footerYear() {
+	const yearEl = document.getElementById('copyrightYear');
+	if (yearEl) {
+		yearEl.textContent = new Date().getFullYear();
+	}
+}
+
+footerYear();
